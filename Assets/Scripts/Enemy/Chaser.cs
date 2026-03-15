@@ -2,17 +2,21 @@ using UnityEngine;
 
 public class Chaser : MonoBehaviour
 {
-    private Vector3 _chasePosition;
+    private Mover _mover;
+    private Rotator _rotator;
 
-    public float Direction {  get; private set; }
-
-    private void Update()
+    private void Awake()
     {
-        Direction = Mathf.Sign(_chasePosition.x - transform.position.x);
+        _mover = GetComponent<Mover>();
+        _rotator = GetComponent<Rotator>();
     }
 
-    public void GetPlayerPosition(Player player)
+    public void Activate(Player player)
     {
-        _chasePosition = player.transform.position;
+        float chasePosition = player.transform.position.x;
+        float direction = Mathf.Sign(chasePosition - transform.position.x);
+
+        _rotator.Rotate(direction);
+        _mover.MoveOnX(direction);
     }
 }

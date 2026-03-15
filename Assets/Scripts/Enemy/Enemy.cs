@@ -4,29 +4,23 @@ public class Enemy : MonoBehaviour
 {
     private Health _health;
     private Atack _atack;
-    private Mover _mover;
-    private Rotator _rotator;
     private Patroller _patroller;
     private AlarmSistem _alarmSistem;
     private Chaser _chaser;
+    private Player _player;
 
-    private float _direction;
+    private bool _patrol = true;
 
     private void Awake()
     {
         _health = GetComponent<Health>();
         _atack = GetComponent<Atack>();
-        _mover = GetComponent<Mover>();
-        _rotator = GetComponent<Rotator>();
         _patroller = GetComponent<Patroller>();
         _alarmSistem = GetComponent<AlarmSistem>();
         _chaser = GetComponent<Chaser>();
     }
 
-    private void Start()
-    {
-        _direction = _patroller.Direction;
-    }
+
 
     private void OnEnable()
     {
@@ -43,19 +37,20 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rotator.Rotate(_direction);
-        _mover.MoveOnX(_direction);
+        if (_patrol)
+            _patroller.Activate();
+        else
+            _chaser.Activate(_player);
     }
 
     private void StartChase(Player player)
     {
-        _chaser.GetPlayerPosition(player);
-        _direction = _chaser.Direction;
+        _player = player;
+        _patrol = false;
     }
 
     private void StartPatroling()
     {
-        _direction = _patroller.Direction;
-        Debug.Log("Patroling");
+        _patrol = true;
     }
 }
