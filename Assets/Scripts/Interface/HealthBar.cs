@@ -18,6 +18,7 @@ public class HealthBar : MonoBehaviour
     private void OnEnable()
     {
         _unitHealth.ValueChanged += Draw;
+        Draw(_unitHealth.Value);
     }
 
     private void OnDisable()

@@ -3,8 +3,12 @@ using UnityEngine;
 public class Atack : MonoBehaviour
 {
     [SerializeField] private float _value;
+    [Tooltip("Количество атак в секунду.")]
+    [SerializeField] private float _speed;
     [Tooltip("Множитель атаки в процентах.")]
     [SerializeField] private float _valueMultiplier;
+
+    public float Speed { get { return _speed; } private set { } }
 
     public void IncreaseValue(float value)
     {

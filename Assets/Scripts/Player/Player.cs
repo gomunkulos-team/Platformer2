@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Mana))]
+[RequireComponent(typeof(Atack))]
 [RequireComponent(typeof(Rotator))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(InputReader))]
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
 {
     private Health _health;
     private Mana _mana;
+    private Atack _attack;
     private Rotator _rotator;
     private Mover _mover;
     private InputReader _inputReader;
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour
     {
         _health = GetComponent<Health>();
         _mana = GetComponent<Mana>();
+        _attack = GetComponent<Atack>();
         _rotator = GetComponent<Rotator>();
         _mover = GetComponent<Mover>();
         _inputReader = GetComponent<InputReader>();
@@ -35,7 +38,19 @@ public class Player : MonoBehaviour
         _triggerCollector.CoinTouched += CollectCoin;
         _triggerCollector.FirstAidTouched += Heal;
 
+        _collisionDetector.EnemyTouched += Attack;
+
         _health.IsOver += Die;
+    }
+
+    private void OnDisable()
+    {
+        _triggerCollector.CoinTouched -= CollectCoin;
+        _triggerCollector.FirstAidTouched -= Heal;
+
+        _collisionDetector.EnemyTouched -= Attack;
+
+        _health.IsOver -= Die;
     }
 
     private void Update()
@@ -60,6 +75,7 @@ public class Player : MonoBehaviour
     private void Heal(FirstAid firstAid)
     {
         _health.Increse(firstAid.HealingAmount);
+        firstAid.Collect();
     }
 
     public void TakeDamage(float damage)
@@ -70,5 +86,10 @@ public class Player : MonoBehaviour
     private void Die()
     {
         this.gameObject.SetActive(false);
+    }
+
+    private void Attack(Enemy enemy)
+    {
+        enemy.TakeDamage(_attack.GetValue());
     }
 }

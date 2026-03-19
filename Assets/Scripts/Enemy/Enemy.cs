@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private AlarmSistem _alarmSistem;
     private Chaser _chaser;
     private Player _player;
+    private Fight _fight;
 
     private bool _patrol = true;
 
@@ -18,21 +19,21 @@ public class Enemy : MonoBehaviour
         _patroller = GetComponent<Patroller>();
         _alarmSistem = GetComponent<AlarmSistem>();
         _chaser = GetComponent<Chaser>();
+        _fight = GetComponent<Fight>();
     }
-
-
 
     private void OnEnable()
     {
         _alarmSistem.PlayerSpotted += StartChase;
         _alarmSistem.PlayerLost += StartPatroling;
-
+        _fight.TargetPlayer += AttackPlayer;
     }
 
     private void OnDisable()
     {
         _alarmSistem.PlayerSpotted -= StartChase;
         _alarmSistem.PlayerLost -= StartPatroling;
+        _fight.TargetPlayer -= AttackPlayer;
     }
 
     private void FixedUpdate()
@@ -52,5 +53,15 @@ public class Enemy : MonoBehaviour
     private void StartPatroling()
     {
         _patrol = true;
+    }
+
+    private void AttackPlayer(Player player)
+    {
+        player.TakeDamage(_atack.GetValue());
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _health.Decrease(damage);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class InputReader : MonoBehaviour
 {
@@ -9,13 +10,13 @@ public class InputReader : MonoBehaviour
 
     public float DirectionX { get; private set; }
 
-    public bool GetIsJump() => GetBoolAsATrigger(ref  _isJump);
+    public bool GetIsJump() => GetBoolAsATrigger(ref _isJump);
 
     private void Update()
     {
         DirectionX = Input.GetAxis(Horizontal);
 
-        if(Input.GetKeyDown(JumpButton))
+        if (Input.GetKeyDown(JumpButton))
             _isJump = true;
     }
 
