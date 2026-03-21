@@ -9,6 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(CollisionDetector))]
 [RequireComponent(typeof(TriggerCollector))]
+[RequireComponent(typeof(PlayerAnimator))]
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     private InputReader _inputReader;
     private CollisionDetector _collisionDetector;
     private TriggerCollector _triggerCollector;
+    private PlayerAnimator _animator;
 
     private void Awake()
     {
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
         _inputReader = GetComponent<InputReader>();
         _collisionDetector = GetComponent<CollisionDetector>();
         _triggerCollector = GetComponent<TriggerCollector>();
+        _animator = GetComponent<PlayerAnimator>();
     }
 
     private void OnEnable()
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
         {
             _rotator.Rotate(_inputReader.DirectionX);
             _mover.MoveOnX(_inputReader.DirectionX);
+            _animator.ControlAnimation(_inputReader.DirectionX);
         }
 
         if (_inputReader.GetIsJump() && _collisionDetector.IsGrounded)

@@ -1,34 +1,60 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class SmoothHealthBar : MonoBehaviour
 {
+    [SerializeField] private Health _health;
+    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private float _timeToChange = 0.03f;
+    [SerializeField] private float _deltaToChangeSlider = 0.004f;
     [SerializeField] private Slider _slider;
-    [SerializeField] private TextMeshProUGUI _valueNumber;
 
-    [SerializeField] private Health _unitHealth;
+    private float _minSliderValue = 0;
+    private float _maxSliderValue = 1;
+    private float _previoseHealthValue;
+
 
     private void Awake()
     {
-        _slider.minValue = _unitHealth.MinValue;
-        _slider.maxValue = _unitHealth.MaxValue;
+        _slider.minValue = _minSliderValue;
+        _slider.maxValue = _maxSliderValue;
     }
 
     private void OnEnable()
     {
-        _unitHealth.ValueChanged += Draw;
-        Draw(_unitHealth.Value);
+        _slider.value = _health.Value / _health.MaxValue;
+        _previoseHealthValue = _slider.value;
+        _text.text = _health.Value.ToString() + "/" + _health.MaxValue;
+
+        _health.ValueChanged += Draw;
     }
 
     private void OnDisable()
     {
-        _unitHealth.ValueChanged -= Draw;
+        _health.ValueChanged -= Draw;
     }
 
     private void Draw(float value)
     {
-        _slider.value = value;
-        _valueNumber.text = value.ToString() + "/" + _unitHealth.MaxValue.ToString();
+        float targetValue = value / _health.MaxValue;
+        float delta = targetValue * _deltaToChangeSlider;
+
+        _text.text = _health.Value.ToString() + "/" + _health.MaxValue;
+
+        StartCoroutine(StartChangeValue(targetValue, delta));
+    }
+
+    private IEnumerator StartChangeValue(float targetValue, float delta)
+    {
+        WaitForSecondsRealtime wait = new WaitForSecondsRealtime(_timeToChange);
+
+        while (Mathf.Abs(_slider.value - targetValue) > 0.001f)
+        {
+            yield return wait;
+            _slider.value = Mathf.MoveTowards(_previoseHealthValue, targetValue, delta);
+            _previoseHealthValue = _slider.value;
+        }
     }
 }
