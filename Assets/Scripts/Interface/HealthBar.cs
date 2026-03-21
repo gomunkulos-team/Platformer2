@@ -29,6 +29,6 @@ public class HealthBar : MonoBehaviour
     private void Draw(float value)
     {
         _slider.value = value;
-        _valueNumber.text = value.ToString();
+        _valueNumber.text = value.ToString() + "/" + _unitHealth.MaxValue.ToString();
     }
 }
