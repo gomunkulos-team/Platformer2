@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Folover : MonoBehaviour
 {
-    [SerializeField] Transform _followTarget;
-    [SerializeField] float _offsetX;
-    [SerializeField] float _offsetY;
+    [SerializeField] private Transform _followTarget;
+    [SerializeField] private float _offsetX;
+    [SerializeField] private float _offsetY;
 
     private void FixedUpdate()
     {

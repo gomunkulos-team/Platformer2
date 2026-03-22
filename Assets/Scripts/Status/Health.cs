@@ -13,10 +13,10 @@ public class Health : MonoBehaviour
     public event Action<float> ValueChanged;
     public event Action IsOver;
 
-    public float MaxValue { get { return _maxValue; } private set { } }
-    public float MinValue { get {return _minValue; } private set { } }
-    public float Value { get {  return _currentValue; } private set { } }
-    public float ValueToTriggerDeath { get { return _valueToTrigerDeath; } private set { } }
+    public float MaxValue => _maxValue;
+    public float MinValue => _minValue;
+    public float Value => _currentValue;
+    public float ValueToTriggerDeath => _valueToTrigerDeath;
 
     private void Awake()
     {

@@ -8,13 +8,9 @@ public class AlarmSistem : MonoBehaviour
     [SerializeField] private Transform _eyePosition;
     [SerializeField] private LayerMask _layerMask;
 
-    private RaycastHit2D _hit;
     private float _chaseTime = 2;
-    private Vector2 _poinOfView;
-    private Vector2 _direction;
 
     private bool _playerWasSeen = false;
-    private bool _seePlayerNow = false;
     private Coroutine _playerLostCoroutine;
 
     public event Action<Player> PlayerSpotted;
@@ -22,14 +18,20 @@ public class AlarmSistem : MonoBehaviour
 
     private void Update()
     {
-        _poinOfView = new Vector2(transform.position.x, _eyePosition.position.y);
-        _direction = transform.right;
+        RaycastHit2D hit;
+        Vector2 poinOfView;
+        Vector2 direction;
 
-        _hit = Physics2D.Raycast(_poinOfView, _direction, _viewDistance, _layerMask);
+        bool seePlayerNow = false;
 
-        if (_hit && _hit.collider.TryGetComponent(out Player player))
+        poinOfView = new Vector2(transform.position.x, _eyePosition.position.y);
+        direction = transform.right;
+
+        hit = Physics2D.Raycast(poinOfView, direction, _viewDistance, _layerMask);
+
+        if (hit && hit.collider.TryGetComponent(out Player player))
         {
-            _seePlayerNow = true;
+            seePlayerNow = true;
 
             if (_playerWasSeen == false)
             {
@@ -43,19 +45,19 @@ public class AlarmSistem : MonoBehaviour
                 _playerLostCoroutine = null;
             }
 
-            Debug.DrawRay(_poinOfView, _direction * _viewDistance, Color.red);
+            Debug.DrawRay(poinOfView, direction * _viewDistance, Color.red);
         }
-        else 
+        else
         {
-            _seePlayerNow= false;
+            seePlayerNow = false;
 
             if (_playerWasSeen && _playerLostCoroutine == null)
                 _playerLostCoroutine = StartCoroutine(LoosePlayerAfterTime());
 
-            Debug.DrawRay(_poinOfView, _direction * _viewDistance, Color.cyan);
+            Debug.DrawRay(poinOfView, direction * _viewDistance, Color.cyan);
         }
 
-        _playerWasSeen = _seePlayerNow;
+        _playerWasSeen = seePlayerNow;
     }
 
     private IEnumerator LoosePlayerAfterTime()

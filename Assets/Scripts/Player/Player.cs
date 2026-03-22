@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Mana))]
-[RequireComponent(typeof(Atack))]
+[RequireComponent(typeof(Damage))]
 [RequireComponent(typeof(Rotator))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(InputReader))]
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 {
     private Health _health;
     private Mana _mana;
-    private Atack _attack;
+    private Damage _attack;
     private Rotator _rotator;
     private Mover _mover;
     private InputReader _inputReader;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     {
         _health = GetComponent<Health>();
         _mana = GetComponent<Mana>();
-        _attack = GetComponent<Atack>();
+        _attack = GetComponent<Damage>();
         _rotator = GetComponent<Rotator>();
         _mover = GetComponent<Mover>();
         _inputReader = GetComponent<InputReader>();

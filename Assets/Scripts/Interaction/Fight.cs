@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Fight : MonoBehaviour
 {
-    private Atack _atack;
+    private Damage _atack;
     private Coroutine _attackCoroutine;
 
     public event Action<Player> TargetPlayer;
 
     private void Awake()
     {
-        _atack = GetComponent<Atack>();
+        _atack = GetComponent<Damage>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,11 +31,12 @@ public class Fight : MonoBehaviour
     private IEnumerator StartAttack(Player player)
     {
         float waitTime = 1 / _atack.Speed;
+        WaitForSeconds wait = new WaitForSeconds(waitTime);
 
         while (true)
         {
             TargetPlayer?.Invoke(player);
-            yield return new WaitForSecondsRealtime(waitTime);
+            yield return wait;
         }
     }
 }

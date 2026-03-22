@@ -3,7 +3,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private Health _health;
-    private Atack _atack;
+    private Damage _atack;
     private Patroller _patroller;
     private AlarmSistem _alarmSistem;
     private Chaser _chaser;
@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _health = GetComponent<Health>();
-        _atack = GetComponent<Atack>();
+        _atack = GetComponent<Damage>();
         _patroller = GetComponent<Patroller>();
         _alarmSistem = GetComponent<AlarmSistem>();
         _chaser = GetComponent<Chaser>();
