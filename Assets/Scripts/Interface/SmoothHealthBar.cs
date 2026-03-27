@@ -15,7 +15,6 @@ public class SmoothHealthBar : MonoBehaviour
     private float _maxSliderValue = 1;
     private float _previoseHealthValue;
 
-
     private void Awake()
     {
         _slider.minValue = _minSliderValue;
@@ -24,8 +23,6 @@ public class SmoothHealthBar : MonoBehaviour
 
     private void OnEnable()
     {
-        _slider.value = _health.Value / _health.MaxValue;
-        _previoseHealthValue = _slider.value;
         _text.text = _health.Value.ToString() + "/" + _health.MaxValue;
 
         _health.ValueChanged += Draw;
@@ -34,6 +31,13 @@ public class SmoothHealthBar : MonoBehaviour
     private void OnDisable()
     {
         _health.ValueChanged -= Draw;
+    }
+
+    private void Start()
+    {
+        _slider.value = _health.Value / _health.MaxValue;
+        Debug.Log(_slider.value);
+        _previoseHealthValue = _slider.value;
     }
 
     private void Draw(float value)

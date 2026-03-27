@@ -36,7 +36,6 @@ public class AlarmSistem : MonoBehaviour
             if (_playerWasSeen == false)
             {
                 PlayerSpotted?.Invoke(player);
-                Debug.Log("Event");
             }
 
             if (_playerLostCoroutine != null)
@@ -62,7 +61,6 @@ public class AlarmSistem : MonoBehaviour
 
     private IEnumerator LoosePlayerAfterTime()
     {
-        Debug.Log("Coroutine Start");
         yield return new WaitForSecondsRealtime(_chaseTime);
         _playerLostCoroutine = null;
         PlayerLost?.Invoke();
