@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
-[RequireComponent(typeof(Mana))]
 [RequireComponent(typeof(Damage))]
 [RequireComponent(typeof(Rotator))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -10,11 +9,11 @@ using UnityEngine;
 [RequireComponent(typeof(CollisionDetector))]
 [RequireComponent(typeof(TriggerCollector))]
 [RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(VampiricAura))]
 
 public class Player : MonoBehaviour
 {
     private Health _health;
-    private Mana _mana;
     private Damage _attack;
     private Rotator _rotator;
     private Mover _mover;
@@ -22,11 +21,11 @@ public class Player : MonoBehaviour
     private CollisionDetector _collisionDetector;
     private TriggerCollector _triggerCollector;
     private PlayerAnimator _animator;
+    private VampiricAura _vampiricAura;
 
     private void Awake()
     {
         _health = GetComponent<Health>();
-        _mana = GetComponent<Mana>();
         _attack = GetComponent<Damage>();
         _rotator = GetComponent<Rotator>();
         _mover = GetComponent<Mover>();
@@ -34,14 +33,17 @@ public class Player : MonoBehaviour
         _collisionDetector = GetComponent<CollisionDetector>();
         _triggerCollector = GetComponent<TriggerCollector>();
         _animator = GetComponent<PlayerAnimator>();
+        _vampiricAura = GetComponent<VampiricAura>();
     }
 
     private void OnEnable()
     {
         _triggerCollector.CoinTouched += CollectCoin;
-        _triggerCollector.FirstAidTouched += Heal;
+        _triggerCollector.FirstAidTouched += CollectFirstAid;
 
         _collisionDetector.EnemyTouched += Attack;
+
+        _vampiricAura.DrainHealth += Heal;
 
         _health.IsOver += Die;
     }
@@ -49,7 +51,7 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         _triggerCollector.CoinTouched -= CollectCoin;
-        _triggerCollector.FirstAidTouched -= Heal;
+        _triggerCollector.FirstAidTouched -= CollectFirstAid;
 
         _collisionDetector.EnemyTouched -= Attack;
 
@@ -69,6 +71,11 @@ public class Player : MonoBehaviour
         {
             _mover.Jump();
         }
+
+        if (_inputReader.GetIsMouseClick() && _vampiricAura.ReadyToActivate)
+        {
+            _vampiricAura.ActivateAura();
+        }
     }
 
     private void CollectCoin(Coin coin)
@@ -76,10 +83,15 @@ public class Player : MonoBehaviour
         coin.Collect();
     }
 
-    private void Heal(FirstAid firstAid)
+    private void Heal(float value)
     {
-        _health.Increse(firstAid.HealingAmount);
+        _health.Increse(value);
+    }
+
+    private void CollectFirstAid(FirstAid firstAid)
+    {
         firstAid.Collect();
+        Heal(firstAid.HealingAmount);
     }
 
     public void TakeDamage(float damage)

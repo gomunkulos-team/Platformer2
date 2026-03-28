@@ -1,5 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Mover))]
+[RequireComponent(typeof(Rotator))]
+
 public class Patroller : MonoBehaviour
 {
     [SerializeField] private Transform[] _waypoints;

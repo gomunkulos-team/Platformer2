@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Damage))]
+
 public class Fight : MonoBehaviour
 {
     private Damage _atack;

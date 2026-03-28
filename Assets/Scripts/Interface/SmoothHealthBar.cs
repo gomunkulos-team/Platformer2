@@ -7,13 +7,14 @@ public class SmoothHealthBar : MonoBehaviour
 {
     [SerializeField] private Health _health;
     [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private float _timeToChange = 0.03f;
-    [SerializeField] private float _deltaToChangeSlider = 0.004f;
+    [SerializeField] private float _timeToChange ;
+    [SerializeField] private float _deltaToChangeSlider;
     [SerializeField] private Slider _slider;
 
     private float _minSliderValue = 0;
     private float _maxSliderValue = 1;
     private float _previoseHealthValue;
+    private float _timeDeviation = 0.01f;
 
     private void Awake()
     {
@@ -54,7 +55,7 @@ public class SmoothHealthBar : MonoBehaviour
     {
         WaitForSecondsRealtime wait = new WaitForSecondsRealtime(_timeToChange);
 
-        while (Mathf.Abs(_slider.value - targetValue) > 0.001f)
+        while (Mathf.Abs(_slider.value - targetValue) > _timeDeviation)
         {
             yield return wait;
             _slider.value = Mathf.MoveTowards(_previoseHealthValue, targetValue, delta);
