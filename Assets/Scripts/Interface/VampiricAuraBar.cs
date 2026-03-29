@@ -6,6 +6,7 @@ public class VampiricAuraBar : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private Image _fillImage;
+    [SerializeField] private VampiricAura _aura;
 
     private float _minSliderValue = 0;
     private float _maxSliderValue = 1;
@@ -29,14 +30,23 @@ public class VampiricAuraBar : MonoBehaviour
     {
         _fillImage.color = _colorForActive;
         _slider.value = _maxSliderValue;
+
+        _aura.ActivateDrain += ActivateDrain;
+        _aura.RechargeDrain += ActivateRecharge;
     }
 
-    public void ActivateDrain(float time)
+    private void OnDisable()
+    {
+        _aura.ActivateDrain -= ActivateDrain;
+        _aura.RechargeDrain -= ActivateRecharge;
+    }
+
+    private void ActivateDrain(float time)
     {
         StartCoroutine(DecreaseBar(time));
     }
 
-    public void ActivateRecharge(float time)
+    private void ActivateRecharge(float time)
     {
         StartCoroutine(IncreaseBar(time));
     }

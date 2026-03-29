@@ -9,6 +9,7 @@ public class VampiricAuraDamager : MonoBehaviour
     private float _damage = 4;
 
     private float _timeIntervalForDamage = 0.75f;
+    private Coroutine _coroutine;
 
     public event Action<float> DrainIsSuccessful;
 
@@ -23,12 +24,19 @@ public class VampiricAuraDamager : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(Drain());
+        _coroutine = StartCoroutine(Drain());
     }
 
     private void OnDisable()
     {
-        StopCoroutine(Drain());
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.azure;
+        Gizmos.DrawWireSphere(transform.position, _radius);
     }
 
     private Enemy GetEnemy()
@@ -40,9 +48,10 @@ public class VampiricAuraDamager : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            if (TryGetComponent(out Enemy enemy))
+            if (hit.TryGetComponent(out Enemy enemy))
             {
                 float distance = (transform.position - enemy.transform.position).sqrMagnitude;
+
                 if (distance < minDistance)
                 {
                     nearestEnemy = enemy;
@@ -57,10 +66,11 @@ public class VampiricAuraDamager : MonoBehaviour
     private IEnumerator Drain()
     {
         WaitForSeconds wait = new WaitForSeconds(_timeIntervalForDamage);
-        Enemy enemy = null;
 
         while (true)
         {
+            Enemy enemy = null;
+
             enemy = GetEnemy();
 
             if (enemy != null)

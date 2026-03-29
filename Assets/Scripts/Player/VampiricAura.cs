@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class VampiricAura : MonoBehaviour
 {
-    [SerializeField] private VampiricAuraBar _bar;
-
     private float _activeTime = 6;
     private float _rechargeTime = 4;
     private bool _readyToActivate;
@@ -14,6 +12,8 @@ public class VampiricAura : MonoBehaviour
     private VampiricAuraDamager _vampiricDamager;
 
     public event Action<float> DrainHealth;
+    public event Action<float> ActivateDrain;
+    public event Action<float> RechargeDrain;
 
     public bool ReadyToActivate => _readyToActivate;
 
@@ -38,14 +38,14 @@ public class VampiricAura : MonoBehaviour
     {
         _vampiricDamager.gameObject.SetActive(true);
         _readyToActivate = false;
-        _bar.ActivateDrain(_activeTime);
+        ActivateDrain?.Invoke(_activeTime);
         StartCoroutine(ActiveTime());
     }
 
     private void RechargeAura()
     {
         _vampiricDamager.gameObject.SetActive(false);
-        _bar.ActivateRecharge(_rechargeTime);
+        RechargeDrain?.Invoke(_rechargeTime);
         StartCoroutine(RechargeTime());
     }
 

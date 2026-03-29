@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c381cf9ad5c0041a2583fcae96cb29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VampiricAura
-  _radius: 20
+  _radius: 3.38
 --- !u!1 &167733280
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,9 +1279,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d81e5a177abbb10459d3253d6dc5118f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  player: {fileID: 1625356105}
-  smoothSpeed: 0.125
-  offset: {x: 2, y: 6, z: -10}
+  _player: {fileID: 0}
+  _smoothSpeed: 0.125
+  _offset: {x: 0, y: 0, z: 0}
 --- !u!1 &522428381
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,6 +3376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VampiricAuraBar
   _slider: {fileID: 1314769265}
   _fillImage: {fileID: 522428382}
+  _aura: {fileID: 1625356116}
 --- !u!224 &1314769264
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3394,7 +3395,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 48, y: -429}
-  m_SizeDelta: {x: 160, y: 20}
+  m_SizeDelta: {x: 300, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1314769265
 MonoBehaviour:
@@ -3443,7 +3444,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.531
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6773,7 +6774,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0d5af38090a304bb96d6202d0089d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VampiricAura
-  _bar: {fileID: 1314769263}
 --- !u!1 &1749790880
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class AlarmSistem : MonoBehaviour
 
     private float _chaseTime = 2;
 
-    private bool _playerWasSeen = false;
+    private bool _wasPlayerSeen = false;
     private Coroutine _playerLostCoroutine;
 
     public event Action<Player> PlayerSpotted;
@@ -22,7 +22,7 @@ public class AlarmSistem : MonoBehaviour
         Vector2 poinOfView;
         Vector2 direction;
 
-        bool seePlayerNow = false;
+        bool isPalyerSeenNow = false;
 
         poinOfView = new Vector2(transform.position.x, _eyePosition.position.y);
         direction = transform.right;
@@ -31,9 +31,9 @@ public class AlarmSistem : MonoBehaviour
 
         if (hit && hit.collider.TryGetComponent(out Player player))
         {
-            seePlayerNow = true;
+            isPalyerSeenNow = true;
 
-            if (_playerWasSeen == false)
+            if (_wasPlayerSeen == false)
             {
                 PlayerSpotted?.Invoke(player);
             }
@@ -48,15 +48,15 @@ public class AlarmSistem : MonoBehaviour
         }
         else
         {
-            seePlayerNow = false;
+            isPalyerSeenNow = false;
 
-            if (_playerWasSeen && _playerLostCoroutine == null)
+            if (_wasPlayerSeen && _playerLostCoroutine == null)
                 _playerLostCoroutine = StartCoroutine(LoosePlayerAfterTime());
 
             Debug.DrawRay(poinOfView, direction * _viewDistance, Color.cyan);
         }
 
-        _playerWasSeen = seePlayerNow;
+        _wasPlayerSeen = isPalyerSeenNow;
     }
 
     private IEnumerator LoosePlayerAfterTime()

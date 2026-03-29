@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
         _fight.TargetPlayer -= AttackPlayer;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_patrol)
             _patroller.Activate();

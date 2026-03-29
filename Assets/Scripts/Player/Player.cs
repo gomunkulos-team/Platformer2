@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
         _triggerCollector.FirstAidTouched -= CollectFirstAid;
 
         _collisionDetector.EnemyTouched -= Attack;
+        _vampiricAura.DrainHealth -= Heal;
 
         _health.IsOver -= Die;
     }

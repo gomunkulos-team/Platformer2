@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    private readonly int Speed = Animator.StringToHash(nameof(Speed));
+    private readonly int _speed = Animator.StringToHash("Speed");
     private Animator _animator;
 
     private void Start()
@@ -14,6 +14,6 @@ public class PlayerAnimator : MonoBehaviour
 
     public void ControlAnimation(float speed)
     {
-        _animator.SetFloat(Speed, Mathf.Abs(speed));
+        _animator.SetFloat(_speed, Mathf.Abs(speed));
     }
 }

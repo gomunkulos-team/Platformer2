@@ -37,7 +37,6 @@ public class SmoothHealthBar : MonoBehaviour
     private void Start()
     {
         _slider.value = _health.Value / _health.MaxValue;
-        Debug.Log(_slider.value);
         _previoseHealthValue = _slider.value;
     }
 
